@@ -38,7 +38,7 @@
       ]
     },
     "reviewScore": {
-      "type": "string",
+      "type": "integer",
       "default": 0,
       "title": "The reviewScore Schema",
       "examples": [
