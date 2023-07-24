@@ -1,12 +1,14 @@
 import config.VideoGameConfig;
 import config.VideoGameEndpoints;
-import io.restassured.RestAssured;
 import io.restassured.matcher.RestAssuredMatchers;
 import io.restassured.module.jsv.JsonSchemaValidator;
+import io.restassured.response.Response;
 import objetct.VideoGame;
 import org.junit.Test;
 
-import static io.restassured.RestAssured.*;
+import static io.restassured.RestAssured.get;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.lessThan;
 
 public class VideoGameTests extends VideoGameConfig {
     String videoGameBody = "{\n" +
@@ -83,7 +85,7 @@ public class VideoGameTests extends VideoGameConfig {
     }
     @Test
     public void testVideoGameSerializationByJSON(){
-        VideoGame videoGame = new VideoGame("action", "GodOfWar", "kid", "2022-02-01", 92);
+        VideoGame videoGame = new VideoGame("action", "GodOfWar", "kid", "2022-02-01", 92, 6);
         given()
                 .body(videoGame)
         .when()
@@ -111,5 +113,32 @@ public class VideoGameTests extends VideoGameConfig {
         .then()
                 .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("VideoGameJsonSchema.json"));
     }
+
+    @Test
+    public void convertJsonToPojo(){
+        Response response =
+                given()
+                .pathParams("videoGameId", 5)
+                .accept("application/json")
+        .when()
+                .get(VideoGameEndpoints.SINGLE_VIDEO_GAMES);
+
+        VideoGame videoGame = response.getBody().as(VideoGame.class);
+// breakpoint
+        System.out.println(videoGame.toString());
+    }
+
+    @Test
+    public void captureResponseTime(){
+        long responseTime = get(VideoGameEndpoints.ALL_VIDEO_GAMES).time();
+        System.out.println("Response time in ML: " + responseTime);
+    }
+
+    @Test
+    public void assertOnResponseTime(){
+        get(VideoGameEndpoints.ALL_VIDEO_GAMES)
+                .then().time(lessThan(2000L));  // option + Enter para importar hamcrast no Mac
+    }
+
 
 }
