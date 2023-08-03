@@ -1,5 +1,4 @@
-package config;
-
+import config.FootballConfig;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.Test;
@@ -9,7 +8,7 @@ import java.util.List;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 
-public class FootballTest extends FootballConfig{
+public class FootballTest extends FootballConfig {
 
     @Test
     public void getDetailsOfOneArea(){
