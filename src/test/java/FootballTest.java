@@ -95,12 +95,11 @@ public class FootballTest extends FootballConfig {
 
         List<String> teamNames = response.path("teams.name");
 
+        //olhar final do log
         for(String teamName : teamNames){
             System.out.println(teamName);
         }
 
     }
-
-
 
 }
